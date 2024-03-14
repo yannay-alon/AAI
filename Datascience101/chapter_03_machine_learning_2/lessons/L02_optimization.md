@@ -184,9 +184,12 @@ $$
 $$
 
 Let's look at this from a computational graph point of view:
+
 ![Composition](../media/lesson-02/composition.png)
+
 Where the squiggly lines denote some arbitrary functions (maybe with more variables).
 Then, what the chain rule is telling us, is that to calculate the derivative of $z$ with respect to $x$ we can go back from $z$, calculate its derivative with respect to $y$, and then multiply it by the derivative of $y$ with respect to $x$ - so we propagate the derivative from the end of the graph all the way to its start.
+
 ![Backpropagation](../media/lesson-02/backpropagation.png)
 
 So as long as $z$ "knows" how to calculate its derivative with respect to $y$, it shouldn't care what happened before $y$.
