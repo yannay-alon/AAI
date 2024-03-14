@@ -137,17 +137,18 @@ To overcome this challenge, you can run the algorithm multiple times using diffe
 
 The main challenge we are left with is calculating the gradient for our loss.
 
-A great video by 3Blue1Brown explains this algorithm with great animations: ![Gradient Descent - 3B1B](https://www.youtube.com/watch?v=IHZwWFHWa-w)
+A great video by 3Blue1Brown explains this algorithm with great animations: [![Gradient Descent - 3B1B](http://img.youtube.com/vi/IHZwWFHWa-w/0.jpg)](http://www.youtube.com/watch?v=IHZwWFHWa-w)
+
 
 # Backpropagation
 Backpropagation is the algorithm that allows us to calculate the gradient of a general neural network efficiently. This algorithm heavily relies on the chain rule for derivatives, so we will have a short reminder, but first, we need to think about how the network is represented from a computational point of view.
 
 <b>Note</b>: Before we dive into the mathematical formulation of this algorithm, you can watch the video by 3Blue1Brown to get some intuition:
-![Backpropagation - 3B1B](https://www.youtube.com/watch?v=Ilg3gGewQ5U)
+[![Backpropagation - 3B1B](http://img.youtube.com/vi/Ilg3gGewQ5U/0.jpg)](http://www.youtube.com/watch?v=Ilg3gGewQ5U)
 
 ## Computational Graph
 Once again there is a great video by 3Blue1Brown about computational graphs and the chain rule. You can watch this video to get the intuition (and even some math!) before reading the full math we need here:
-![Chain rule - 3B1B](https://www.youtube.com/watch?v=tIeHLnjs5U8)
+[![Chain rule - 3B1B](http://img.youtube.com/vi/tIeHLnjs5U8/0.jpg)](http://www.youtube.com/watch?v=tIeHLnjs5U8)
 
 We need to represent the neural networks for the computer to be able to calculate them. For this, we use computational graphs. A computational graph is a directed graph that describes a function.
 The nodes of the graph are mathematical operations (addition, multiplication, etc.) or variables (scalars, vectors, etc.) and the edges describe the order of the operations. Here are a few examples:
