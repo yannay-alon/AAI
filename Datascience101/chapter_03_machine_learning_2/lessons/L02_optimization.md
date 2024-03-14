@@ -158,15 +158,20 @@ We need to represent the neural networks for the computer to be able to calculat
 The nodes of the graph are mathematical operations (addition, multiplication, etc.) or variables (scalars, vectors, etc.) and the edges describe the order of the operations. Here are a few examples:
 
 If we want to create the graph of the function $y = a \cdot (a + b)$ we use the graph:
+
 ![Computational Graph](../media/lesson-02/Computational_graph.png)
+
 When we want to calculate the value of the function for specific values of $a, b$ we plug those values in and propagate them forward in the graph.
 If we set $a = 3$ and $b = 4$, the graph will tell us to calculate the sum $3 + 4 = 7$, then take the result and multiply it by $3$ to give $3 \cdot 7 = 21$, then take the result and plug it into $y$. So indeed we get $y = 3 \cdot (3 + 4)$ = 21.
 
 In the previous lesson, we saw the basic building block, the Perceptron, as a computational graph:
 The function $f(x; w, b) = w^Tx + b$ is represented using the graph:
+
 ![Perceptron](../media/lesson-02/Perceptron.png)
+
 Note that the parameters are just part of the graph, like any other variable.
 If we want to represent an MLP, we just stack several of these one after the other:
+
 ![MLP](../media/lesson-02/MLP.png)
 
 Now that we know how to build the network as a graph, and we know how to calculate the output using forward propagation, we are left with the problem of calculating the gradient of the network.
@@ -213,7 +218,9 @@ $$
 To achieve this using our graph we first propagate the graph forward after we set $x = 2$, then when the nodes hold the values they calculated we can propagate backward the derivate, in each node we simply multiply the derivate we have so far with the derivative of the current node.
 
 What happens when we have multiple branches? Let's look at the following graph:
+
 ![Branching and Composition](../media/lesson-02/branching_composition.png)
+
 Here $z$ is a function of both $y_1, y_2$ and each of them is a function of $x$.
 In this case, the chain rule is:
 
@@ -224,7 +231,9 @@ $$
 The scribbled d: $\partial$ means we calculate the derivative while acting as if all other variables are constants (so $\frac{\partial z}{\partial y_1}$ is calculated as if $x, y_2$ were constants)
 .
 We can think of this as calculating the derivative of each arrow individually, and then combining them:
+
 ![Branching and Composition - Backpropagation](../media/lesson-02/branching_composition_backprop.png)
+
 To combine we follow a simple rule:
 * If we have a split, we add the derivative of each branch.
 * If we have an intermediate variable we multiply the derivatives.
@@ -524,7 +533,9 @@ We'll start with the most general case:
 ## The Big Observation
 Now we are ready for the most important observation that allows us to compute the gradient efficiently in deep nets for all of the weights.
 For this, let's look again at the case of an MLP:
+
 ![MLP](../media/lesson-02/MLP.png)
+
 If we want to update the weights (using gradient descent for example), we need to calculate the gradient of the error $L(W, b)$ with $W = (w_1, w_2, \dots w_K)$  and $b = (b_1, b_2, \dots, b_K)$ are all of the parameters of the network with $K$ layers.
 
 We will focus on the case of an $L_2$ loss, that is $\ell(\hat{y}, y) = (\hat{y} - y)^2$, and we will focus on just a single sample $(x, y)$ since the gradient of the (empirical) loss is just the average of the gradients over each sample (remember, differentiation is a linear operator, even in high dimensions):
@@ -541,6 +552,7 @@ $$
 for all $k = 1, 2, \dots K$
 If we look at the graph, we see that the path from $y$ to $w_i$ and the path from $y$ to $w_j$ have a lot in common. This means that the intermediate derivatives can be shared along the shared parts.
 To formulate this, we will annotate the outputs of intermediate nodes in the graph and we will add the loss:
+
 ![MLP with annotations](../media/lesson-02/annotated_MLP.png)
 
 So for example, when we calculate the gradient with respect to $w_1$ and with respect to $b_2$.
@@ -653,13 +665,16 @@ The randomness in this algorithm can even improve our final result. Sometimes wh
 
 Assuming the following graph represents our loss function, we might stuck at $w=0$.
 But if the graph slightly changes (due to the random samples we draw), we might be able to escape from this local minimum.
+
 ![Non-convex example](..\media\lesson-02\non_convex.png)
 
 ### Momentum
 Another approach for escaping local minima is by updating the weights not just by the local gradient, but also by some momentum we have from previous iterations.
 
 Intuitively, imagine a ball rolling down from the left side of the graph:
+
 ![Non-convex example](..\media\lesson-02\non_convex.png)
+
 If it has enough speed by the time it gets to $w=0$, it will keep rolling to the right, maybe even over the bump, instead of getting stuck.
 
 To achieve this, we accumulate the gradient from previous iterations and add a small size of this to the current gradient. An example implementation is done using changing the outer loop:
